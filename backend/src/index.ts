@@ -185,24 +185,24 @@ app.post('/api/emails/:emailId/category', async (_req: Request, res: Response) =
   }
 });
 
-app.post('/api/emails/:emailId/suggest-reply', async (req: Request, res: Response) => {
+app.post('/api/emails/:emailId/suggest-reply', async (_req: Request, res: Response) => {
   try {
-    const { emailId } = req.params;
-    const { accountId, context } = req.body;
+    const { emailId } = _req.params;
+    const { accountId, context } = _req.body;
     const emails = await elasticsearchService.searchEmails({ accountId, id: emailId });
     if (emails.length === 0) {
       return res.status(404).json({ error: 'Email not found' });
     }
     const suggestedReply = await aiService.generateReply(emails[0], context);
-    res.json({ reply: suggestedReply });
+    return res.json({ reply: suggestedReply });
   } catch (error) {
     console.error('Suggest reply error:', error);
-    res.status(500).json({ error: 'Failed to generate reply suggestion' });
+    return res.status(500).json({ error: 'Failed to generate reply suggestion' });
   }
 });
 
 // Add new endpoint to manually trigger email fetch
-app.post('/api/fetch-emails', async (req: Request, res: Response) => {
+app.post('/api/fetch-emails', async (_req: Request, res: Response) => {
   try {
     let totalEmails = 0;
     for (const service of imapServices) {
@@ -235,10 +235,10 @@ app.post('/api/fetch-emails', async (req: Request, res: Response) => {
         }
       }
     }
-    res.json({ success: true, emailsIndexed: totalEmails });
+    return res.json({ success: true, emailsIndexed: totalEmails });
   } catch (error) {
     console.error('Fetch emails error:', error);
-    res.status(500).json({ error: 'Failed to fetch and index emails' });
+    return res.status(500).json({ error: 'Failed to fetch and index emails' });
   }
 });
 

@@ -1,14 +1,5 @@
 services:
   - type: web
-    name: email-aggregator-frontend
-    env: node
-    buildCommand: cd frontend && npm install && npm run build
-    startCommand: cd frontend && npm run preview
-    envVars:
-      - key: VITE_API_URL
-        value: https://email-aggregator-backend.onrender.com
-
-  - type: web
     name: email-aggregator-backend
     env: node
     buildCommand: cd backend && npm install && npm run build
@@ -16,12 +7,47 @@ services:
     envVars:
       - key: NODE_ENV
         value: production
+      - key: PORT
+        value: 4000
       - key: ELASTICSEARCH_URL
         fromDatabase:
           name: elasticsearch
           property: connectionString
       - key: GOOGLE_AI_API_KEY
         sync: false
+      - key: SLACK_WEBHOOK_URL
+        sync: false
+      - key: EXTERNAL_WEBHOOK_URL
+        sync: false
+      - key: EMAIL1
+        sync: false
+      - key: IMAP_HOST1
+        sync: false
+      - key: IMAP_PORT1
+        sync: false
+      - key: IMAP_USER1
+        sync: false
+      - key: IMAP_PASSWORD1
+        sync: false
+      - key: EMAIL2
+        sync: false
+      - key: IMAP_HOST2
+        sync: false
+      - key: IMAP_PORT2
+        sync: false
+      - key: IMAP_USER2
+        sync: false
+      - key: IMAP_PASSWORD2
+        sync: false
+
+  - type: web
+    name: email-aggregator-frontend
+    env: node
+    buildCommand: cd frontend && npm install && npm run build
+    startCommand: cd frontend && npm run preview
+    envVars:
+      - key: VITE_API_URL
+        value: https://email-aggregator-backend.onrender.com
 
 databases:
   - name: elasticsearch
