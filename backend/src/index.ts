@@ -5,7 +5,7 @@ import { ImapService } from './services/imap.service';
 import { ElasticsearchService } from './services/elasticsearch.service';
 import { AIService } from './services/ai.service';
 import { NotificationService } from './services/notification.service';
-import { EmailAccount, Email } from './types/email';
+import { EmailAccount } from './types/email';
 
 dotenv.config();
 
@@ -148,26 +148,26 @@ imapServices.forEach(service => {
 });
 
 // API Routes
-app.get('/api/emails', async (req: Request, res: Response) => {
+app.get('/api/emails', async (_req: Request, res: Response) => {
   try {
-    const { query, accountId, folder, category } = req.query;
+    const { query, accountId, folder, category } = _req.query;
     const emails = await elasticsearchService.searchEmails({
       query: query as string,
       accountId: accountId as string,
       folder: folder as string,
       category: category as string
     });
-    res.json(emails);
+    return res.json(emails);
   } catch (error) {
     console.error('Search error:', error);
-    res.status(500).json({ error: 'Failed to search emails' });
+    return res.status(500).json({ error: 'Failed to search emails' });
   }
 });
 
-app.post('/api/emails/:emailId/category', async (req: Request, res: Response) => {
+app.post('/api/emails/:emailId/category', async (_req: Request, res: Response) => {
   try {
-    const { emailId } = req.params;
-    const { accountId, category } = req.body;
+    const { emailId } = _req.params;
+    const { accountId, category } = _req.body;
     await elasticsearchService.updateEmailCategory(emailId, accountId, category);
 
     // If category is updated to Interested, trigger notifications
@@ -178,10 +178,10 @@ app.post('/api/emails/:emailId/category', async (req: Request, res: Response) =>
       }
     }
 
-    res.json({ success: true });
+    return res.json({ success: true });
   } catch (error) {
     console.error('Update category error:', error);
-    res.status(500).json({ error: 'Failed to update email category' });
+    return res.status(500).json({ error: 'Failed to update email category' });
   }
 });
 
