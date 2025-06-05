@@ -32,4 +32,14 @@ export default defineConfig({
       },
     },
   },
+  preview: {
+    port: process.env.PORT ? parseInt(process.env.PORT) : 4173,
+    host: '0.0.0.0',
+    strictPort: true,
+    allowedHosts: [
+      'email-aggregator-frontend.onrender.com',
+      'localhost',
+      '127.0.0.1'
+    ]
+  }
 }) 
