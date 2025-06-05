@@ -108,8 +108,8 @@ const EmailList = ({ filters }: EmailListProps) => {
                   <Text noOfLines={1}>{email.subject}</Text>
                 </Td>
                 <Td>
-                  <Badge colorScheme={getCategoryColor(email.category)}>
-                    {email.category}
+                  <Badge colorScheme={getCategoryColor(email.category || 'Spam')}>
+                    {email.category || 'Uncategorized'}
                   </Badge>
                 </Td>
                 <Td>

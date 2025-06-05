@@ -1,6 +1,5 @@
 import Imap from 'imap';
 import { simpleParser } from 'mailparser';
-import { promisify } from 'util';
 import { Email, EmailAccount } from '../types/email';
 import { EventEmitter } from 'events';
 
@@ -59,14 +58,13 @@ export class ImapService extends EventEmitter {
     });
   }
 
-  async fetchNewEmails(options?: { days?: number; folder?: string } | undefined): Promise<Email[]> {
-    const days = options?.days ?? 90;
+  async fetchNewEmails(options?: { days?: number; folder?: string }): Promise<Email[]> {
     const folder = options?.folder ?? 'INBOX';
     
     return new Promise((resolve, reject) => {
       const emails: Email[] = [];
 
-      this.connection.openBox(folder, false, (err: Error, box: any) => {
+      this.connection.openBox(folder, false, (err: Error) => {
         if (err) {
           if (err.message.includes('No such mailbox')) {
             console.log(`Folder ${folder} does not exist for ${this.account.email}, available folders will be logged on connection`);

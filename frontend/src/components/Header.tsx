@@ -4,11 +4,10 @@ import { useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 
 interface HeaderProps {
-  onSearch?: (query: string) => void;
   onFilterChange?: (filters: { query: string; folder: string; category: string }) => void;
 }
 
-const Header = ({ onSearch, onFilterChange }: HeaderProps) => {
+const Header = ({ onFilterChange }: HeaderProps) => {
   const [searchQuery, setSearchQuery] = useState('');
   const [filters, setFilters] = useState({
     query: '',

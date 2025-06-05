@@ -15,7 +15,7 @@ import {
 } from '@chakra-ui/react';
 import { format } from 'date-fns';
 import { fetchEmailById, updateEmailCategory, generateReply } from '../services/api';
-import { Email, EmailCategory } from '../types/email';
+import { EmailCategory } from '../types/email';
 
 const EmailDetail = () => {
   const { emailId } = useParams<{ emailId: string }>();

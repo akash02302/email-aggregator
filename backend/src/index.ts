@@ -248,27 +248,23 @@ app.post('/api/test-webhooks', async (req: Request, res: Response) => {
     const testEmail = {
       id: 'test-123',
       accountId: 'test-account',
+      subject: 'Test Email',
       from: 'test@example.com',
-      subject: 'Test Webhook Integration',
-      textBody: 'This is a test email to verify webhook integrations.',
+      to: ['recipient@example.com'],
       date: new Date(),
-      folder: 'INBOX',
-      category: 'Interested',
-      to: ['recipient@example.com']
-    } as Email;
-
+      folder: 'INBOX'
+    };
     await notificationService.notifyInterestedEmail(testEmail);
-    res.json({ 
-      success: true, 
-      message: 'Test notifications sent. Please check Slack and webhook.site for the notifications.'
-    });
+    return res.json({ success: true });
   } catch (error) {
     console.error('Test webhook error:', error);
-    res.status(500).json({ 
-      error: 'Failed to send test notifications',
-      details: error instanceof Error ? error.message : 'Unknown error'
-    });
+    return res.status(500).json({ error: 'Failed to test webhooks' });
   }
+});
+
+// Add health check endpoint
+app.get('/health', (_, res: Response) => {
+  return res.json({ status: 'ok' });
 });
 
 // Start server
